@@ -1,25 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { lazy, Suspense } from "react";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+const Landing = lazy(() => import('./pages/Landing'))
+const WizardForm = lazy(() => import('./pages/WizardForm'))
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <Suspense fallback={<div>...loading</div>}>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/create" element={<WizardForm />} />
+          </Routes>
+        </Router>
+      </Suspense >
+    </LocalizationProvider>
   );
 }
 
