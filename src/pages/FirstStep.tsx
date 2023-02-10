@@ -57,7 +57,7 @@ const FirstStep: React.FC<FirstStepProps> = ({ handleNextStep, formData,updateFo
                 const target = event.target as HTMLInputElement;
                 if (target.files) {
                     setFirstFormData(prevFormData => ({ ...prevFormData, image: target.files }))
-                    updateFormData({ [field]: value });
+                    updateFormData({ image: target.files });
                 }
             }
         };

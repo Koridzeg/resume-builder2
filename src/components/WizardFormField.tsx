@@ -15,13 +15,7 @@ type TextFieldProps = {
 const WizardFormField = ({ label, hint, placeholder, validate, onError,value,onChange }: TextFieldProps) => {
     const [fieldValue, setFieldValue] = useState(value)
     const [error, setError] = useState<undefined | boolean>(undefined)
-
     
-
-    useEffect(() => {
-        localStorage.setItem(label, value)
-    }, [label, value])
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = e.target.value
         setFieldValue(newValue)

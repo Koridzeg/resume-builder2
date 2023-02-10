@@ -17,7 +17,18 @@ interface Degree {
     title: string;
 }
 
-const ThirdStep: React.FC<ThirdStepProps> = ({ handleBackStep, handleNextStep }) => {
+
+type formDataTypes = {
+    name: string,
+    surname: string,
+    image: FileList | null,
+    aboutMe: string,
+    email: string,
+    number: string,
+}
+
+
+const ThirdStep: React.FC<{ handleNextStep: (stepData: formDataTypes) => void, handleBackStep: () => void, formData: formDataTypes }> = ({ handleBackStep, handleNextStep, formData }) => {
     const [degrees, setDegrees] = useState<Degree[]>([])
     const [selectedDegree, setSelectedDegree] = useState<number | null>(null)
     const [formCount, setFormCount] = useState(1)
@@ -72,7 +83,7 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ handleBackStep, handleNextStep })
                 {Array.from({ length: formCount }, (_, index) => (
                     <React.Fragment key={index} >
                         <Box display='flex' width='89%' paddingTop='1em' paddingLeft='7.5em'>
-                            <WizardFormField onError={(error) => setEducationError(error)} placeholder='სასწავლებელი' label='სასწავლებელი' hint='მინიმუმ 2 სიმბოლო' validate={handleEducationValidation} />
+                            <WizardFormField onChange={(value) => setEducationDescription(value)} value={educationDescription} onError={(error) => setEducationError(error)} placeholder='სასწავლებელი' label='სასწავლებელი' hint='მინიმუმ 2 სიმბოლო' validate={handleEducationValidation} />
                         </Box>
                         <Box display='flex' flexDirection='row' gap='4em' paddingTop='1.5em' paddingLeft='7.5em'>
                             <Box display='flex' flexDirection='column' width='40%' gap='1em'>
@@ -119,7 +130,7 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ handleBackStep, handleNextStep })
                 <Box display='flex' paddingLeft='7.5em' width='88%' flexDirection='row' justifyContent='space-between' paddingTop='10em'>
                     <Button sx={{ bgcolor: '#6B40E3', width: '113px', height: '48px', borderRadius: '4px', color: 'white', fontSize: '18px', fontWeight: '500' }}>უკან</Button>
                     <Button onClick={() => {
-                        handleNextStep();
+                        handleNextStep(formData);
                     }} sx={{ bgcolor: '#6B40E3', width: '151px', height: '48px', borderRadius: '4px', color: 'white', fontSize: '18px', fontWeight: '500' }}>შემდეგი</Button>
                 </Box>
             </Box>

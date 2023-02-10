@@ -7,24 +7,45 @@ import WizardFormField from '../components/WizardFormField'
 import Resume from '../components/Resume'
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
 import smallLine from '../images/smallline.png'
-import { Dayjs } from 'dayjs'
+import { firstFormDataTypes, WizardFormData } from '../types'
 
 
-type SecondStepProps = {
-    handleBackStep: () => void;
-    handleNextStep: () => void
+
+type secondFormDataTypes = {
+    position: string,
+    employer: string,
+    startingDate: string | null,
+    endingDate: string | null,
+    description: string,
 }
 
-const SecondStep: React.FC<SecondStepProps> = ({ handleBackStep, handleNextStep }) => {
+type formDataTypes = {
+    name: string,
+    surname: string,
+    image: FileList | null,
+    aboutMe: string,
+    email: string,
+    number: string,
+}
+
+const SecondStep: React.FC<{ handleNextStep: (stepData: WizardFormData) => void, handleBackStep: () => void, formData: WizardFormData }> = ({ handleNextStep, handleBackStep, formData }) => {
     const [formCount, setFormCount] = useState(1)
-    const [inputValues, setInputValues] = useState<{ [key: string]: string }>({})
-    const [positionError, setPositonError] = useState<boolean>(false)
-    const [employerError, setEmployerError] = useState<boolean>(false)
-    const startingDateValueStr = localStorage.getItem('startingDateValue');
-    const [startingDate, setStartingDate] = useState<string | null>(startingDateValueStr);
-    const endingDateValueStr = localStorage.getItem('endingDateValue');
-    const [endingDate, setEndingDate] = useState<string | null>(endingDateValueStr);
-    const [description, setDescription] = useState(localStorage.getItem('description') || '')
+    const [errors, setErrors] = useState({
+        positionError: false,
+        employerError: false,
+        startingDateError: false,
+        endingDateError: false,
+        descriptionError: false,
+    })
+
+    const [secondFormData, setsecondFormData] = useState<secondFormDataTypes>({
+        position: '',
+        employer: '',
+        startingDate: '',
+        endingDate: '',
+        description: '',
+    })
+
     const handlePositionValidation = (value: string): boolean => {
         return value.length >= 2
     }
@@ -38,14 +59,19 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleBackStep, handleNextStep 
     }
 
     const handleDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setDescription(e.target.value)
+        setsecondFormData(prevsecondFormData => ({ ...prevsecondFormData, description: e.target.value }));
     }
 
-    useEffect(() => {
-        localStorage.setItem("startingDateValue", startingDate || '');
-        localStorage.setItem("endingDateValue", endingDate || '');
-        localStorage.setItem("description", description);
-    }, [startingDate, endingDate, description]);
+    const handleError = (field: string, error: boolean) => {
+        setErrors(prevErrors => ({ ...prevErrors, [field]: error }))
+    }
+
+    const handleFieldChange = (field: string, value: string) => {
+        setsecondFormData({
+            ...secondFormData,
+            [field]: value
+        })
+    }
 
     return (
         <Box display='flex' width='100%' flexDirection='row'>
@@ -64,24 +90,30 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleBackStep, handleNextStep 
                 {Array.from({ length: formCount }, (_, index) => (
                     <React.Fragment key={index} >
                         <Box display='flex' width='89%' paddingTop='1em' paddingLeft='7.5em'>
-                            <WizardFormField onError={(error) => setPositonError(error)} placeholder='დეველოპერი, დიზაინერი, ა.შ.' label='თანამდებობა' hint='მინიმუმ 2 სიმბოლო' validate={handlePositionValidation} />
+                            <WizardFormField value={secondFormData.position} onError={(value) => handleError('positionError', value)} onChange={(value) => handleFieldChange('position', value)} placeholder='დეველოპერი, დიზაინერი, ა.შ.' label='თანამდებობა' hint='მინიმუმ 2 სიმბოლო' validate={handlePositionValidation} />
                         </Box>
                         <Box display='flex' width='89%' paddingTop='1em' paddingLeft='7.5em'>
-                            <WizardFormField onError={(error) => setEmployerError(error)} placeholder='დამსაქმებელი' label='დამსაქმებელი' hint='მინიმუმ 2 სიმბოლო' validate={handleEmployerValidation} />
+                            <WizardFormField value={secondFormData.employer} onError={(value) => handleError('employerError', value)} onChange={(value) => handleFieldChange('employer', value)} placeholder='დამსაქმებელი' label='დამსაქმებელი' hint='მინიმუმ 2 სიმბოლო' validate={handleEmployerValidation} />
                         </Box>
                         <Box display='flex' flexDirection='row' gap='4em' paddingTop='1.5em' paddingLeft='7.5em'>
                             <Box display='flex' flexDirection='column' width='40%' gap='1em'>
                                 <Typography sx={{ fontSize: '18px', fontWeight: '700' }}>დაწყების რიცხვი</Typography>
-                                <DesktopDatePicker value={startingDate} onChange={(newValue) => {
-                                    setStartingDate(newValue)
+                                <DesktopDatePicker value={secondFormData.startingDate} onChange={(newValue) => {
+                                    setsecondFormData({
+                                        ...secondFormData,
+                                        startingDate: newValue
+                                    })
                                 }}
                                     renderInput={(params) => <TextField sx={{ bgcolor: 'white' }} {...params} />}
                                 ></DesktopDatePicker>
                             </Box>
                             <Box display='flex' flexDirection='column' width='40%' gap='1em'>
                                 <Typography sx={{ fontSize: '18px', fontWeight: '700' }}>დამთავრების რიცხვი</Typography>
-                                <DesktopDatePicker value={endingDate} onChange={(newValue) => {
-                                    setEndingDate(newValue)
+                                <DesktopDatePicker value={secondFormData.endingDate} onChange={(newValue) => {
+                                    setsecondFormData({
+                                        ...secondFormData,
+                                        endingDate: newValue
+                                    })
                                 }}
                                     renderInput={(params) => <TextField sx={{ bgcolor: 'white' }} {...params} />}
                                 ></DesktopDatePicker>
@@ -91,7 +123,7 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleBackStep, handleNextStep 
                         <Box display='flex' flexDirection='column' gap='0.4em' paddingTop='1.2em' paddingLeft='7.5em'>
                             <Typography fontWeight='700' fontSize='20px'>აღწერა</Typography>
                             <Box>
-                                <TextField value={description} onChange={handleDescription} multiline placeholder="როლი თანამდებობაზე და ზოგადი აღწერა" rows={4} sx={{ bgcolor: 'white', width: "87%" }} />
+                                <TextField value={secondFormData.description} onChange={handleDescription} multiline placeholder="როლი თანამდებობაზე და ზოგადი აღწერა" rows={4} sx={{ bgcolor: 'white', width: "87%" }} />
                             </Box>
                         </Box>
                     </React.Fragment>
@@ -103,11 +135,11 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleBackStep, handleNextStep 
                 <Box display='flex' paddingLeft='7.5em' width='88%' flexDirection='row' justifyContent='space-between' paddingTop='4em'>
                     <Button sx={{ bgcolor: '#6B40E3', width: '113px', height: '48px', borderRadius: '4px', color: 'white', fontSize: '18px', fontWeight: '500' }}>უკან</Button>
                     <Button onClick={() => {
-                        handleNextStep();
+                        handleNextStep({...formData, ...secondFormData});
                     }} sx={{ bgcolor: '#6B40E3', width: '151px', height: '48px', borderRadius: '4px', color: 'white', fontSize: '18px', fontWeight: '500' }}>შემდეგი</Button>
                 </Box>
             </Box>
-            <Resume></Resume>
+            <Resume formData={formData}></Resume>
         </Box>
     )
 }
