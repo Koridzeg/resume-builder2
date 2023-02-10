@@ -1,24 +1,22 @@
 import { Box, IconButton, TextField, Typography } from '@mui/material'
 import Button from "@mui/material/Button"
 import WizardFormField from "../components/WizardFormField"
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom"
 import back from "../images/back.png"
 import line from "../images/line.png"
 import Resume from '../components/Resume'
+import { firstFormDataTypes, WizardFormData } from '../types'
 
 
-type formDataTypes = {
-    name: string,
-    surname: string,
-    image: FileList | null,
-    aboutMe: string,
-    email: string,
-    number: string,
-}
+interface FirstStepProps {
+    handleNextStep: (stepData: WizardFormData) => void;
+    formData: WizardFormData;
+    updateFormData: (updateData: Partial<WizardFormData>) => void
+  }
 
 
-const FirstStep: React.FC<{ handleNextStep: () => void }> = ({ handleNextStep }) => {
+const FirstStep: React.FC<FirstStepProps> = ({ handleNextStep, formData,updateFormData }) => {
     const [errors, setErrors] = useState({
         nameError: false,
         surnameError: false,
@@ -27,19 +25,22 @@ const FirstStep: React.FC<{ handleNextStep: () => void }> = ({ handleNextStep })
         aboutMeError: false,
         numberError: false,
     })
-    const [formData, setFormData] = useState<formDataTypes>({
+    const storedFormData = localStorage.getItem('formData');
+    const [firstFormData, setFirstFormData] = useState<firstFormDataTypes>(storedFormData ? JSON.parse(storedFormData) : {
         name: '',
         surname: '',
         image: null,
         aboutMe: '',
         email: '',
         number: '',
+    });
 
-    })
-
-    console.log(formData)
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        localStorage.setItem('firstFormData', JSON.stringify(firstFormData));
+    }, [firstFormData]);
 
     const handleError = (field: string, error: boolean) => {
         setErrors(prevErrors => ({ ...prevErrors, [field]: error }))
@@ -55,7 +56,8 @@ const FirstStep: React.FC<{ handleNextStep: () => void }> = ({ handleNextStep })
             if (event.target) {
                 const target = event.target as HTMLInputElement;
                 if (target.files) {
-                    setFormData(prevFormData => ({ ...prevFormData, image: target.files }))
+                    setFirstFormData(prevFormData => ({ ...prevFormData, image: target.files }))
+                    updateFormData({ [field]: value });
                 }
             }
         };
@@ -82,19 +84,22 @@ const FirstStep: React.FC<{ handleNextStep: () => void }> = ({ handleNextStep })
     }
 
     const handleAboutMeChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setFormData(prevFormData => ({ ...prevFormData, aboutMe: event.target.value }));
+        setFirstFormData(prevFormData => ({ ...prevFormData, aboutMe: event.target.value }));
     };
 
     const handleFieldChange = (field: string, value: string) => {
-        setFormData({
-            ...formData,
-            [field]: value
-        })
-    }
+        setFirstFormData({
+          ...firstFormData,
+          [field]: value,
+        });
+    
+        updateFormData({ [field]: value });
+      };
+
 
 
     return (
-        <Box display='flex' height='100vh' width='100%' flexDirection='row' >
+        <Box display='flex' minHeight='100vh' width='100%' flexDirection='row' >
             <Box display='flex' paddingLeft='1.5em' gap="1.5em" bgcolor='#F9F9F9' height="100%" width="55%" flexDirection='column'>
                 <Box display='flex' gap="3em" flexDirection='row' padding='2em'>
                     <IconButton style={{ height: '40px', width: '40px', }} onClick={() => {
@@ -109,10 +114,10 @@ const FirstStep: React.FC<{ handleNextStep: () => void }> = ({ handleNextStep })
                 </Box>
                 <Box display='flex' paddingLeft='7.5em' gap="4em">
                     <Box width="40%">
-                        <WizardFormField value={formData.name} onChange={(value) => handleFieldChange('name', value)} onError={(error) => handleError('nameError', error)} placeholder='ანზორ' label="სახელი" hint="მინიმუმ 2 ასო,ქართული ასოები" validate={handleNameValidation} />
+                        <WizardFormField value={firstFormData.name} onChange={(value) => handleFieldChange('name', value)} onError={(error) => handleError('nameError', error)} placeholder='ანზორ' label="სახელი" hint="მინიმუმ 2 ასო,ქართული ასოები" validate={handleNameValidation} />
                     </Box>
                     <Box width="40%">
-                        <WizardFormField value={formData.surname} onChange={(value) => handleFieldChange('surname', value)} onError={(error) => handleError('surnameError', error)} placeholder='მუმლაძე' label="გვარი" hint="მინიმუმ 2 ასო,ქართული ასოები" validate={handleNameValidation} />
+                        <WizardFormField value={firstFormData.surname} onChange={(value) => handleFieldChange('surname', value)} onError={(error) => handleError('surnameError', error)} placeholder='მუმლაძე' label="გვარი" hint="მინიმუმ 2 ასო,ქართული ასოები" validate={handleNameValidation} />
                     </Box>
                 </Box>
                 <Box display='flex' gap="1.5em" paddingTop='1em' paddingLeft='7.5em'>
@@ -122,14 +127,14 @@ const FirstStep: React.FC<{ handleNextStep: () => void }> = ({ handleNextStep })
                 <Box display='flex' flexDirection='column' gap='0.4em' paddingTop='1.2em' paddingLeft='7.5em'>
                     <Typography fontWeight='700' fontSize='20px'>ჩემ შესახებ (არასავალდებულო)</Typography>
                     <Box>
-                        <TextField value={formData.aboutMe} onChange={handleAboutMeChange} multiline placeholder="ზოგადი ინფო შენ შესახებ" rows={4} sx={{ bgcolor: 'white', width: "87%" }} />
+                        <TextField value={firstFormData.aboutMe} onChange={handleAboutMeChange} multiline placeholder="ზოგადი ინფო შენ შესახებ" rows={4} sx={{ bgcolor: 'white', width: "87%", border: undefined ? '1px solid #000000' : '1px solid #98E37E' }} />
                     </Box>
                 </Box>
                 <Box display='flex' width='89%' paddingTop='1em' paddingLeft='7.5em'>
-                    <WizardFormField value={formData.email} onChange={(value) => handleFieldChange('email', value)} onError={(error) => handleError('emailError', error)} placeholder='anzorr666@redberry.ge' label='ელ.ფოსტა' hint='უნდა მთავრდებოდეს @redberry.ge-ით' validate={handleEmailValidation} />
+                    <WizardFormField value={firstFormData.email} onChange={(value) => handleFieldChange('email', value)} onError={(error) => handleError('emailError', error)} placeholder='anzorr666@redberry.ge' label='ელ.ფოსტა' hint='უნდა მთავრდებოდეს @redberry.ge-ით' validate={handleEmailValidation} />
                 </Box>
                 <Box display='flex' width='89%' paddingTop='1em' paddingLeft='7.5em'>
-                    <WizardFormField value={formData.number} onChange={(value) => handleFieldChange('number', value)} onError={(error) => handleError('numberError', error)} placeholder='+995 551 12 34 56' label='მობილურის ნომერი' hint='უნდა აკმაყოფილებდეს ქართული მობილურის ნომრის ფორმატს' validate={handlePhoneValidation} />
+                    <WizardFormField value={firstFormData.number} onChange={(value) => handleFieldChange('number', value)} onError={(error) => handleError('numberError', error)} placeholder='+995 551 12 34 56' label='მობილურის ნომერი' hint='უნდა აკმაყოფილებდეს ქართული მობილურის ნომრის ფორმატს' validate={handlePhoneValidation} />
                 </Box>
                 <Box display='flex' justifyContent='flex-end' width='89%' paddingTop='4em'>
                     <Button
@@ -137,7 +142,11 @@ const FirstStep: React.FC<{ handleNextStep: () => void }> = ({ handleNextStep })
                         onClick={() => {
                             const allErrorsAreFalse = Object.values(errors).every(error => error === false);
                             if (allErrorsAreFalse) {
-                                handleNextStep();
+                                handleNextStep({
+                                    ...formData,
+                                    ...firstFormData
+                                });
+
                             }
                         }}
                     >
@@ -146,7 +155,7 @@ const FirstStep: React.FC<{ handleNextStep: () => void }> = ({ handleNextStep })
                 </Box>
             </Box>
 
-            <Resume></Resume>
+            <Resume  formData={formData}></Resume>
 
 
         </Box>
