@@ -11,6 +11,7 @@ type ResumeProps = {
 
 const Resume: React.FC<ResumeProps> = ({ formData }) => {
 
+    console.log(formData)
 
     return (
         <Box display='flex' height='100%' width='45%' gap='1.5rem' flexDirection='column' paddingLeft='5em' paddingTop='3.5em'>
@@ -34,10 +35,17 @@ const Resume: React.FC<ResumeProps> = ({ formData }) => {
             </Box>
             <img src={smallLine} alt="" style={{ width: '90%' }} />
             <Typography fontWeight='700' fontSize='28px' color='#F93B1D'>გამოცდილება</Typography>
-            <Box>
-                {/* <Typography>{secondFormData.position}</Typography>
-                <Typography>{secondFormData.employer}</Typography> */}
+            <Box display='flex' flexDirection='row' gap='1em'>
+                <Typography fontWeight='700' color='#1A1A1A' >{formData.position},</Typography>
+                <Typography fontWeight='700' color='#1A1A1A'>{formData.employer}</Typography>
             </Box>
+            <Box display='flex' flexDirection='row' gap='1em'>
+                <Typography fontWeight='700' color='#1A1A1A' >,</Typography>
+                <Typography fontWeight='700' color='#1A1A1A'></Typography>
+            </Box>
+            {formData.image && formData.image.length > 0 && (
+                <img src={URL.createObjectURL(formData.image[0])} alt="" />
+            )}
         </Box>
     )
 }

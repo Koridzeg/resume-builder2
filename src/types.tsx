@@ -1,20 +1,24 @@
- export type secondFormDataTypes = {
+
+
+export type WizardFormData = {
+    name: string,
+    surname: string,
+    image: File[] | null | undefined,
+    aboutMe: string,
+    email: string,
+    number: string,
     position: string,
     employer: string,
     startingDate: string | null,
     endingDate: string | null,
     description: string,
+    institute: string,
+    degree:Degree[]
+    due_date: string | null,
+    eduDescription: string,
 }
 
-
-export type firstFormDataTypes = {
-    name: string,
-    surname: string,
-    image: FileList | null,
-    aboutMe: string,
-    email: string,
-    number: string,
+interface Degree  {
+    id:string,
+    title:string,
 }
-
-
- export type WizardFormData = firstFormDataTypes & secondFormDataTypes

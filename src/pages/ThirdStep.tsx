@@ -6,54 +6,43 @@ import WizardFormField from "../components/WizardFormField";
 import Resume from "../components/Resume";
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
 import smallLine from '../images/smallline.png'
+import { WizardFormData } from "../types";
 
 type ThirdStepProps = {
-    handleBackStep: () => void;
-    handleNextStep: () => void
+    handleNextStep: () => void,
+    handleBackStep: () => void,
+    formData: WizardFormData
+    updateFormData: (updateData: Partial<WizardFormData>) => void
 }
 
-interface Degree {
-    id: number;
-    title: string;
-}
-
-
-type formDataTypes = {
-    name: string,
-    surname: string,
-    image: FileList | null,
-    aboutMe: string,
-    email: string,
-    number: string,
-}
-
-
-const ThirdStep: React.FC<{ handleNextStep: (stepData: formDataTypes) => void, handleBackStep: () => void, formData: formDataTypes }> = ({ handleBackStep, handleNextStep, formData }) => {
-    const [degrees, setDegrees] = useState<Degree[]>([])
-    const [selectedDegree, setSelectedDegree] = useState<number | null>(null)
+const ThirdStep: React.FC<ThirdStepProps> = ({ handleBackStep, handleNextStep, formData, updateFormData }) => {
     const [formCount, setFormCount] = useState(1)
-    const [educationDescription, setEducationDescription] = useState(localStorage.getItem('educationDescription') || '')
-    const [educationError, setEducationError] = useState<boolean>(false)
+    const [selectedDegree, setSelectedDegree] = useState<number | null>(null)
 
-    const educationDateStr = localStorage.getItem('educationDate');
-    const [educationDate, setEducationDate] = useState<string | null>(educationDateStr);
+    const [errors, setErrors] = useState({
+        institute: '',
+        degreeError: '',
+        endingDateError: '',
+
+    })
+
+    const handleError = (field: string, error: boolean) => {
+        setErrors(prevErrors => ({ ...prevErrors, [field]: error }))
+    }
 
     const handleEducationValidation = (value: string): boolean => {
         return value.length >= 2
     }
 
-    useEffect(() => {
-        localStorage.setItem("educationDate", educationDate || '');
-    }, [educationDate])
 
     useEffect(() => {
         fetch('https://resume.redberryinternship.ge/api/degrees')
             .then((response) => response.json())
-            .then((data) => setDegrees(data))
-    }, [])
+            .then((data) => updateFormData({ degree: data }))
+    }, [updateFormData])
 
     const handleEducationDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEducationDescription(e.target.value)
+        updateFormData({eduDescription: e.target.value})
     }
 
     const handleChange = (event: SelectChangeEvent<number>) => {
@@ -76,14 +65,14 @@ const ThirdStep: React.FC<{ handleNextStep: (stepData: formDataTypes) => void, h
                         <img src={back} alt='circle' />
                     </IconButton>
                     <Box display='flex' flexDirection='column'>
-                        <Typography sx={{ fontWeight: '700', fontSize: '24px' }}>გამოცდილება</Typography>
+                        <Typography sx={{ fontWeight: '700', fontSize: '24px' }}>განათლება</Typography>
                         <img src={line} alt="line" style={{ width: '90%', paddingTop: '1em' }} />
                     </Box>
                 </Box>
                 {Array.from({ length: formCount }, (_, index) => (
                     <React.Fragment key={index} >
                         <Box display='flex' width='89%' paddingTop='1em' paddingLeft='7.5em'>
-                            <WizardFormField onChange={(value) => setEducationDescription(value)} value={educationDescription} onError={(error) => setEducationError(error)} placeholder='სასწავლებელი' label='სასწავლებელი' hint='მინიმუმ 2 სიმბოლო' validate={handleEducationValidation} />
+                            <WizardFormField onChange={(value) => updateFormData({institute: value})} value={formData.institute} onError={(error) => handleError('institute', error)} placeholder='სასწავლებელი' label='სასწავლებელი' hint='მინიმუმ 2 სიმბოლო' validate={handleEducationValidation} />
                         </Box>
                         <Box display='flex' flexDirection='row' gap='4em' paddingTop='1.5em' paddingLeft='7.5em'>
                             <Box display='flex' flexDirection='column' width='40%' gap='1em'>
@@ -97,7 +86,7 @@ const ThirdStep: React.FC<{ handleNextStep: (stepData: formDataTypes) => void, h
 
                                         value={selectedDegree || ""}
                                         onChange={handleChange}>
-                                        {degrees.map((degree) => (
+                                        {formData.degree.map((degree) => (
                                             <MenuItem key={degree.id} value={degree.id}>
                                                 {degree.title}
                                             </MenuItem>
@@ -107,8 +96,8 @@ const ThirdStep: React.FC<{ handleNextStep: (stepData: formDataTypes) => void, h
                             </Box>
                             <Box display='flex' flexDirection='column' width='40%' gap='1em'>
                                 <Typography sx={{ fontSize: '18px', fontWeight: '700' }}>დამთავრების რიცხვი</Typography>
-                                <DesktopDatePicker value={educationDate} onChange={(newValue) => {
-                                    setEducationDate(newValue)
+                                <DesktopDatePicker value={formData.due_date} onChange={(newValue) => {
+                                    updateFormData({due_date: newValue})
                                 }}
                                     renderInput={(params) => <TextField sx={{ bgcolor: 'white' }} {...params} />}
                                 >
@@ -118,7 +107,7 @@ const ThirdStep: React.FC<{ handleNextStep: (stepData: formDataTypes) => void, h
                         <Box display='flex' flexDirection='column' gap='0.4em' paddingTop='1.2em' paddingLeft='7.5em'>
                             <Typography fontWeight='700' fontSize='20px'>აღწერა</Typography>
                             <Box>
-                                <TextField value={educationDescription} onChange={handleEducationDescription} multiline placeholder="როლი თანამდებობაზე და ზოგადი აღწერა" rows={4} sx={{ bgcolor: 'white', width: "87%" }} />
+                                <TextField value={formData.eduDescription} onChange={handleEducationDescription} multiline placeholder="როლი თანამდებობაზე და ზოგადი აღწერა" rows={4} sx={{ bgcolor: 'white', width: "87%" }} />
                             </Box>
                         </Box>
                     </React.Fragment>
@@ -130,11 +119,11 @@ const ThirdStep: React.FC<{ handleNextStep: (stepData: formDataTypes) => void, h
                 <Box display='flex' paddingLeft='7.5em' width='88%' flexDirection='row' justifyContent='space-between' paddingTop='10em'>
                     <Button sx={{ bgcolor: '#6B40E3', width: '113px', height: '48px', borderRadius: '4px', color: 'white', fontSize: '18px', fontWeight: '500' }}>უკან</Button>
                     <Button onClick={() => {
-                        handleNextStep(formData);
+                        handleNextStep();
                     }} sx={{ bgcolor: '#6B40E3', width: '151px', height: '48px', borderRadius: '4px', color: 'white', fontSize: '18px', fontWeight: '500' }}>შემდეგი</Button>
                 </Box>
             </Box>
-            <Resume></Resume>
+            <Resume formData={formData}></Resume>
         </Box>
     )
 }
