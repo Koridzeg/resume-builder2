@@ -19,11 +19,13 @@ const WizardForm: React.FC = () => {
             aboutMe: '',
             email: '',
             number: '',
-            position: '',
-            employer: '',
-            startingDate: '',
-            endingDate: '',
-            description: '',
+            experiences: [{
+                position: '',
+                employer: '',
+                startingDate: '',
+                endingDate: '',
+                description: '',
+            }],
             institute: '',
             degree: [],
             due_date: '',
@@ -41,6 +43,7 @@ const WizardForm: React.FC = () => {
     useEffect(() => {
         localStorage.setItem('formData', JSON.stringify(formData));
     }, [formData]);
+
 
     const renderStep = (step: number) => {
         switch (step) {

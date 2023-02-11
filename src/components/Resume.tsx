@@ -36,15 +36,15 @@ const Resume: React.FC<ResumeProps> = ({ formData }) => {
             <img src={smallLine} alt="" style={{ width: '90%' }} />
             <Typography fontWeight='700' fontSize='28px' color='#F93B1D'>გამოცდილება</Typography>
             <Box display='flex' flexDirection='row' gap='1em'>
-                <Typography fontWeight='700' color='#1A1A1A' >{formData.position},</Typography>
-                <Typography fontWeight='700' color='#1A1A1A'>{formData.employer}</Typography>
+                <Typography fontWeight='700' color='#1A1A1A' >{},</Typography>
+                <Typography fontWeight='700' color='#1A1A1A'></Typography>
             </Box>
             <Box display='flex' flexDirection='row' gap='1em'>
                 <Typography fontWeight='700' color='#1A1A1A' >,</Typography>
                 <Typography fontWeight='700' color='#1A1A1A'></Typography>
             </Box>
             {formData.image && formData.image.length > 0 && (
-                <img src={URL.createObjectURL(formData.image[0])} alt="" />
+                <img src={/^image\/.*$/.test(formData.image[0].type) ? URL.createObjectURL(formData.image[0]) : ''} alt="" />
             )}
         </Box>
     )

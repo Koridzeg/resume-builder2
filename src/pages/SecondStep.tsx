@@ -1,14 +1,13 @@
 import { Box, IconButton, TextField, Typography } from '@mui/material'
 import Button from '@mui/material/Button'
-import React, {  useState } from 'react'
+import React, { useState } from 'react'
 import back from "../images/back.png"
 import line from "../images/line.png"
 import WizardFormField from '../components/WizardFormField'
 import Resume from '../components/Resume'
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
 import smallLine from '../images/smallline.png'
-import {  WizardFormData } from '../types'
-
+import { WizardFormData } from '../types'
 
 
 
@@ -44,17 +43,41 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleNextStep, handleBackStep,
         return value.length >= 2
     }
 
-    const handleDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
-        updateFormData({ description: e.target.value });
-    }
 
     const handleError = (field: string, error: boolean) => {
         setErrors(prevErrors => ({ ...prevErrors, [field]: error }))
     }
 
-    const handleFieldChange = (field: string, value: string) => {
-        updateFormData({ [field]: value });
-    }
+    const handleFieldChange = (index: number, field: 'position' | 'employer' | 'startingDate' | 'endingDate' | 'description', value: string) => {
+        const updatedExperiences = formData.experiences.map((experience, i) => {
+            if (i === index) {
+                return { ...experience, [field]: value };
+            }
+            return experience;
+        });
+        updateFormData({ experiences: updatedExperiences });
+    };
+
+    const handleStartingDateChange = (index: number, newValue: string | null) => {
+        const updatedExperiences = formData.experiences.map((experience, i) => {
+            if (i === index) {
+                return { ...experience, startingDate: newValue || '' };
+            }
+            return experience;
+        });
+        updateFormData({ experiences: updatedExperiences });
+    };
+
+    const handleEndingDateChange = (index: number, newValue: string | null) => {
+        const updatedExperiences = formData.experiences.map((experience, i) => {
+            if (i === index) {
+                return { ...experience, endingDate: newValue || '' };
+            }
+            return experience;
+        });
+        updateFormData({ experiences: updatedExperiences });
+    };
+
 
     return (
         <Box display='flex' width='100%' flexDirection='row'>
@@ -72,37 +95,41 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleNextStep, handleBackStep,
                 </Box>
                 {Array.from({ length: formCount }, (_, index) => (
                     <React.Fragment key={index} >
-                        <Box display='flex' width='89%' paddingTop='1em' paddingLeft='7.5em'>
-                            <WizardFormField value={formData.position} onError={(value) => handleError('positionError', value)} onChange={(value) => handleFieldChange('position', value)} placeholder='დეველოპერი, დიზაინერი, ა.შ.' label='თანამდებობა' hint='მინიმუმ 2 სიმბოლო' validate={handlePositionValidation} />
-                        </Box>
-                        <Box display='flex' width='89%' paddingTop='1em' paddingLeft='7.5em'>
-                            <WizardFormField value={formData.employer} onError={(value) => handleError('employerError', value)} onChange={(value) => handleFieldChange('employer', value)} placeholder='დამსაქმებელი' label='დამსაქმებელი' hint='მინიმუმ 2 სიმბოლო' validate={handleEmployerValidation} />
-                        </Box>
-                        <Box display='flex' flexDirection='row' gap='4em' paddingTop='1.5em' paddingLeft='7.5em'>
-                            <Box display='flex' flexDirection='column' width='40%' gap='1em'>
-                                <Typography sx={{ fontSize: '18px', fontWeight: '700' }}>დაწყების რიცხვი</Typography>
-                                <DesktopDatePicker value={formData.startingDate} onChange={(newValue) => {
-                                    updateFormData({ startingDate: newValue });
-                                }}
-                                    renderInput={(params) => <TextField sx={{ bgcolor: 'white' }} {...params} />}
-                                ></DesktopDatePicker>
-                            </Box>
-                            <Box display='flex' flexDirection='column' width='40%' gap='1em'>
-                                <Typography sx={{ fontSize: '18px', fontWeight: '700' }}>დამთავრების რიცხვი</Typography>
-                                <DesktopDatePicker value={formData.endingDate} onChange={(newValue) => {
-                                    updateFormData({ startingDate: newValue })
-                                }}
-                                    renderInput={(params) => <TextField sx={{ bgcolor: 'white' }} {...params} />}
-                                ></DesktopDatePicker>
-                            </Box>
+                        {formData.experiences.map((experience, index) => (
+                            <>
+                                <Box display='flex' width='89%' paddingTop='1em' paddingLeft='7.5em'>
+                                    <WizardFormField value={experience.position} onError={(value) => handleError('positionError', value)} onChange={(value) => handleFieldChange(index, 'position', value)} placeholder='დეველოპერი, დიზაინერი, ა.შ.' label='თანამდებობა' hint='მინიმუმ 2 სიმბოლო' validate={handlePositionValidation} />
+                                </Box>
+                                <Box display='flex' width='89%' paddingTop='1em' paddingLeft='7.5em'>
+                                    <WizardFormField value={experience.employer} onError={(value) => handleError('employerError', value)} onChange={(value) => handleFieldChange(index, 'employer', value)} placeholder='დამსაქმებელი' label='დამსაქმებელი' hint='მინიმუმ 2 სიმბოლო' validate={handleEmployerValidation} />
+                                </Box>
+                                <Box display='flex' flexDirection='row' gap='4em' paddingTop='1.5em' paddingLeft='7.5em'>
+                                    <Box display='flex' flexDirection='column' width='40%' gap='1em'>
+                                        <Typography sx={{ fontSize: '18px', fontWeight: '700' }}>დაწყების რიცხვი</Typography>
+                                        <DesktopDatePicker value={experience.startingDate} onChange={(newValue) => {
+                                            handleStartingDateChange(index, newValue)
+                                        }}
+                                            renderInput={(params) => <TextField sx={{ bgcolor: 'white' }} {...params} />}
+                                        ></DesktopDatePicker>
+                                    </Box>
+                                    <Box display='flex' flexDirection='column' width='40%' gap='1em'>
+                                        <Typography sx={{ fontSize: '18px', fontWeight: '700' }}>დამთავრების რიცხვი</Typography>
+                                        <DesktopDatePicker value={experience.endingDate || ''} onChange={(newValue) => {
+                                            handleEndingDateChange(index, newValue)
+                                        }}
+                                            renderInput={(params) => <TextField sx={{ bgcolor: 'white' }} {...params} />}
+                                        ></DesktopDatePicker>
+                                    </Box>
 
-                        </Box>
-                        <Box display='flex' flexDirection='column' gap='0.4em' paddingTop='1.2em' paddingLeft='7.5em'>
-                            <Typography fontWeight='700' fontSize='20px'>აღწერა</Typography>
-                            <Box>
-                                <TextField value={formData.description} onChange={handleDescription} multiline placeholder="როლი თანამდებობაზე და ზოგადი აღწერა" rows={4} sx={{ bgcolor: 'white', width: "87%" }} />
-                            </Box>
-                        </Box>
+                                </Box>
+                                <Box display='flex' flexDirection='column' gap='0.4em' paddingTop='1.2em' paddingLeft='7.5em'>
+                                    <Typography fontWeight='700' fontSize='20px'>აღწერა</Typography>
+                                    <Box>
+                                        <TextField value={experience.description} onChange={(e) => handleFieldChange(index, 'description', e.target.value)}  multiline placeholder="როლი თანამდებობაზე და ზოგადი აღწერა" rows={4} sx={{ bgcolor: 'white', width: "87%" }} />
+                                    </Box>
+                                </Box>
+                            </>
+                        ))}
                     </React.Fragment>
                 ))}
                 <Box display='flex' flexDirection='column' gap='3em' paddingTop='1.2em' paddingLeft='7.5em'>
