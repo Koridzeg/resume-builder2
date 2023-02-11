@@ -70,7 +70,7 @@ const FirstStep: React.FC<FirstStepProps> = ({ handleNextStep, formData, updateF
     }
 
     const handleAboutMeChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        updateFormData({ aboutMe: event.target.value });
+        updateFormData({ about_me: event.target.value });
     };
 
     const handleFieldChange = (field: string, value: string) => {
@@ -108,14 +108,14 @@ const FirstStep: React.FC<FirstStepProps> = ({ handleNextStep, formData, updateF
                 <Box display='flex' flexDirection='column' gap='0.4em' paddingTop='1.2em' paddingLeft='7.5em'>
                     <Typography fontWeight='700' fontSize='20px'>ჩემ შესახებ (არასავალდებულო)</Typography>
                     <Box>
-                        <TextField value={formData.aboutMe} onChange={handleAboutMeChange} multiline placeholder="ზოგადი ინფო შენ შესახებ" rows={4} sx={{ bgcolor: 'white', width: "87%", border: undefined ? '1px solid #000000' : '1px solid #98E37E' }} />
+                        <TextField value={formData.about_me} onChange={handleAboutMeChange} multiline placeholder="ზოგადი ინფო შენ შესახებ" rows={4} sx={{ bgcolor: 'white', width: "87%", border: undefined ? '1px solid #000000' : '1px solid #98E37E' }} />
                     </Box>
                 </Box>
                 <Box display='flex' width='89%' paddingTop='1em' paddingLeft='7.5em'>
                     <WizardFormField value={formData.email} onChange={(value) => handleFieldChange('email', value)} onError={(error) => handleError('emailError', error)} placeholder='anzorr666@redberry.ge' label='ელ.ფოსტა' hint='უნდა მთავრდებოდეს @redberry.ge-ით' validate={handleEmailValidation} />
                 </Box>
                 <Box display='flex' width='89%' paddingTop='1em' paddingLeft='7.5em'>
-                    <WizardFormField value={formData.number} onChange={(value) => handleFieldChange('number', value)} onError={(error) => handleError('numberError', error)} placeholder='+995 551 12 34 56' label='მობილურის ნომერი' hint='უნდა აკმაყოფილებდეს ქართული მობილურის ნომრის ფორმატს' validate={handlePhoneValidation} />
+                    <WizardFormField value={formData.phone_number} onChange={(value) => handleFieldChange('phone_number', value)} onError={(error) => handleError('numberError', error)} placeholder='+995 551 12 34 56' label='მობილურის ნომერი' hint='უნდა აკმაყოფილებდეს ქართული მობილურის ნომრის ფორმატს' validate={handlePhoneValidation} />
                 </Box>
                 <Box display='flex' justifyContent='flex-end' width='89%' paddingTop='4em'>
                     <Button

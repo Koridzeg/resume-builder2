@@ -26,7 +26,7 @@ const Resume: React.FC<ResumeProps> = ({ formData }) => {
                 </Box>
                 <Box display='flex' gap='1rem' flexDirection='row' alignItems='center'>
                     <img style={{ width: '20px', height: '20px' }} src={phone} alt="" />
-                    <Typography fontSize='20px'>{formData.number}</Typography>
+                    <Typography fontSize='20px'>{formData.phone_number}</Typography>
                 </Box>
             </Box>
             <Typography color='#F93B1D' fontWeight='700' fontSize='28px'>ჩემ შესახებ</Typography>

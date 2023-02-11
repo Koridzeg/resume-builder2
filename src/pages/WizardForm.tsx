@@ -16,9 +16,9 @@ const WizardForm: React.FC = () => {
             name: '',
             surname: '',
             image: null,
-            aboutMe: '',
+            about_me: '',
             email: '',
-            number: '',
+            phone_number: '',
             experiences: [{
                 position: '',
                 employer: '',
@@ -28,9 +28,9 @@ const WizardForm: React.FC = () => {
             }],
             educations:[{
                 institute: '',
-                degree: [],
+                degree_id: '',
                 due_date: '',
-                eduDescription: '',
+                description: '',
             }]
         };
     });

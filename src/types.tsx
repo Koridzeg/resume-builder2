@@ -4,9 +4,9 @@ export type WizardFormData = {
     name: string,
     surname: string,
     image: File[] | null | undefined,
-    aboutMe: string,
+    about_me: string,
     email: string,
-    number: string,
+    phone_number: string,
     experiences: {
         position: string,
         employer: string,
@@ -20,9 +20,4 @@ export type WizardFormData = {
         due_date: '',
         description: '',
     }[];
-}
-
-interface Degree {
-    id: string,
-    title: string,
 }
