@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
+import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select,  TextField, Typography } from "@mui/material";
 import line from '../images/line.png'
 import back from '../images/back.png'
 import React, { useState, useEffect } from "react";
@@ -9,7 +9,7 @@ import smallLine from '../images/smallline.png'
 import { WizardFormData } from "../types";
 
 interface Degree {
-    id: string,
+    id: number,
     title: string,
 }
 
@@ -22,7 +22,6 @@ type ThirdStepProps = {
 
 const ThirdStep: React.FC<ThirdStepProps> = ({ handleBackStep, handleNextStep, formData, updateFormData }) => {
     const [formCount, setFormCount] = useState(1)
-    const [selectedDegree, setSelectedDegree] = useState<number | null>(null)
     const [degree, setDegree] = useState<Degree[]>([])
 
     const [errors, setErrors] = useState({
@@ -48,12 +47,6 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ handleBackStep, handleNextStep, f
     }, [])
 
 
-
-    const handleChange = (event: SelectChangeEvent<number>) => {
-        const value = event.target.value as number;
-        setSelectedDegree(value)
-    };
-
     const handleAddForm = () => {
         setFormCount(formCount + 1)
         updateFormData({
@@ -61,7 +54,7 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ handleBackStep, handleNextStep, f
                 ...formData.educations,
                 {
                     institute: '',
-                    degree_id: '',
+                    degree_id: 0,
                     due_date: '',
                     description: '',
                 }
@@ -69,26 +62,25 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ handleBackStep, handleNextStep, f
         })
     }
 
-    const handleFieldChange = (index: number, field: 'institute' | 'degree' | 'due_date' | 'endingDate' | 'description', value: string) => {
-        const updatedExperiences = formData.experiences.map((experience, i) => {
+    const handleFieldChange = (index: number, field: 'institute' | 'degree_id' | 'due_date' | 'endingDate' | 'description', value: string | number) => {
+        const updatedEducations = formData.educations.map((educations, i) => {
             if (i === index) {
-                return { ...experience, [field]: value };
+                return { ...educations, [field]: value };
             }
-            return experience;
+            return educations;
         });
-        updateFormData({ experiences: updatedExperiences });
+        updateFormData({ educations: updatedEducations });
     };
 
     const handleEndingDateChange = (index: number, newValue: string | null) => {
-        const updatedExperiences = formData.experiences.map((experience, i) => {
+        const updatedExperiences = formData.educations.map((educations, i) => {
             if (i === index) {
-                return { ...experience, endingDate: newValue || '' };
+                return { ...educations, due_date: newValue || '' };
             }
-            return experience;
+            return educations;
         });
-        updateFormData({ experiences: updatedExperiences });
+        updateFormData({ educations: updatedExperiences });
     };
-
 
     return (
         <Box display='flex' width='100%' flexDirection='row' >
@@ -121,8 +113,8 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ handleBackStep, handleNextStep, f
                                         sx={{ bgcolor: 'white' }}
                                         id="degree-select"
 
-                                        value={selectedDegree || ""}
-                                        onChange={handleChange}>
+                                        value={formData.educations[index].degree_id}
+                                        onChange={(e) => handleFieldChange(index,'degree_id', e.target.value)}>
                                         {degree.map((degree) => (
                                             <MenuItem key={degree.id} value={degree.id}>
                                                 {degree.title}

@@ -1,25 +1,25 @@
 import { Box, TextField, Typography } from '@mui/material'
-import React, {  useState } from 'react'
+import React, { useState } from 'react'
 import errorImage from '../images/error.png'
 
 type TextFieldProps = {
     label: string,
     hint: string,
     placeholder: string,
-    value:string,
+    value: string,
     validate: (value: string) => boolean,
     onError: (error: boolean) => void,
     onChange: (value: string) => void,
 }
 
-const WizardFormField = ({ label, hint, placeholder, validate, onError,value,onChange }: TextFieldProps) => {
+const WizardFormField = ({ label, hint, placeholder, validate, onError, value, onChange }: TextFieldProps) => {
     const [fieldValue, setFieldValue] = useState(value)
     const [error, setError] = useState<undefined | boolean>(undefined)
-    
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = e.target.value
         setFieldValue(newValue)
-        if(newValue.length < 0){
+        if (newValue.length < 0) {
             setError(undefined)
         } else {
             setError(!validate(newValue))
@@ -47,14 +47,15 @@ const WizardFormField = ({ label, hint, placeholder, validate, onError,value,onC
                         width: '100%',
                         "& .MuiOutlinedInput-root.Mui-focused": {
                             "& > fieldset": {
-                      borderColor: "black"
+                                borderColor: "black",
                             }
-                          }
+                        },
+
                     }}
                     type='text'
                     value={value}
                     onChange={handleChange} />
-                {error && <img src={errorImage} alt='error' style={{ width: '20px', height: '20px', margin: 'auto' }} />}
+                {error && <img src={errorImage} alt='error' style={{ width: '20px', height: '20px',position:'relative',left:'10px',top:'17px'  }} />}
             </Box>
             <Typography fontSize='14px' color='#2E2E2E' fontWeight='100'>{hint}</Typography>
         </Box>

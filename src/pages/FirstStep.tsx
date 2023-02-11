@@ -1,7 +1,7 @@
 import { Box, IconButton, TextField, Typography } from '@mui/material'
 import Button from "@mui/material/Button"
 import WizardFormField from "../components/WizardFormField"
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom"
 import back from "../images/back.png"
 import line from "../images/line.png"
@@ -17,7 +17,8 @@ interface FirstStepProps {
 
 
 const FirstStep: React.FC<FirstStepProps> = ({ handleNextStep, formData, updateFormData }) => {
-    const [errors, setErrors] = useState({
+    const [formValid, setFormValid] = useState(false);
+    const [, setErrors] = useState({
         nameError: false,
         surnameError: false,
         emailError: false,
@@ -43,7 +44,11 @@ const FirstStep: React.FC<FirstStepProps> = ({ handleNextStep, formData, updateF
             if (event.target) {
                 const target = event.target as HTMLInputElement;
                 if (target.files) {
-                    updateFormData({ image: Array.from(target.files) });
+                    const reader = new FileReader();
+                    reader.readAsDataURL(target.files[0]);
+                    reader.onload = (e) => {
+                        updateFormData({ image: e.target?.result as string });
+                    }
                 }
             }
         };
@@ -77,11 +82,27 @@ const FirstStep: React.FC<FirstStepProps> = ({ handleNextStep, formData, updateF
         updateFormData({ [field]: value });
     };
 
+    useEffect(() => {
+        const nameValid = handleNameValidation(formData.name);
+        const emailValid = handleEmailValidation(formData.email);
+        const phoneValid = handlePhoneValidation(formData.phone_number);
+        const surnameValid = handleNameValidation(formData.surname);
+        const imageValid = formData.image.length > 0;
+    
+        setFormValid(nameValid && emailValid && phoneValid && surnameValid && imageValid);
+    }, [formData]);
 
+    const handleSubmit = (e:React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+    
+        if (formValid) {
+            handleNextStep();
+        }
+    };
 
     return (
-        <Box display='flex' minHeight='100vh' width='100%' flexDirection='row' >
-            <Box display='flex' paddingLeft='1.5em' gap="1.5em" bgcolor='#F9F9F9' height="100%" width="55%" flexDirection='column'>
+        <Box display='flex' width='100%' flexDirection='row' >
+            <Box display='flex' minHeight='100vh' paddingLeft='1.5em' gap="1.5em" bgcolor='#F9F9F9' height="100%" width="55%" flexDirection='column'>
                 <Box display='flex' gap="3em" flexDirection='row' padding='2em'>
                     <IconButton style={{ height: '40px', width: '40px', }} onClick={() => {
                         navigate('/')
@@ -89,7 +110,10 @@ const FirstStep: React.FC<FirstStepProps> = ({ handleNextStep, formData, updateF
                         <img src={back} alt='circle' />
                     </IconButton>
                     <Box display='flex' flexDirection='column'>
-                        <Typography sx={{ fontWeight: '700', fontSize: '24px' }}>პირადი ინფო</Typography>
+                        <Box display='flex' justifyContent='space-between' width='90%'>
+                            <Typography sx={{ fontWeight: '700', fontSize: '26px' }}>პირადი ინფო</Typography>
+                            <Typography sx={{ position: 'relative', top: '50%', fontSize: '18px' }}>1/3</Typography>
+                        </Box>
                         <img src={line} alt="line" style={{ width: '90%', paddingTop: '1em' }} />
                     </Box>
                 </Box>
@@ -120,20 +144,7 @@ const FirstStep: React.FC<FirstStepProps> = ({ handleNextStep, formData, updateF
                 <Box display='flex' justifyContent='flex-end' width='89%' paddingTop='4em'>
                     <Button
                         sx={{ bgcolor: '#6B40E3', width: '151px', height: '48px', borderRadius: '4px', color: 'white', fontSize: '18px' }}
-                        onClick={() => {
-                            if (!formData.image || formData.image.length === 0) {
-                                handleError('imageError', true)
-
-                            } else {
-                                handleError('imageError', false)
-
-                            }
-                            const allErrorsAreFalse = Object.values(errors).every(error => error === false);
-                            if (allErrorsAreFalse) {
-                                handleNextStep()
-
-                            }
-                        }}
+                        onClick={handleSubmit}
                     >
                         შემდეგი
                     </Button>

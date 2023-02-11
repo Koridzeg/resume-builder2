@@ -15,7 +15,7 @@ const WizardForm: React.FC = () => {
         return storedData ? JSON.parse(storedData) : {
             name: '',
             surname: '',
-            image: null,
+            image: '',
             about_me: '',
             email: '',
             phone_number: '',
@@ -28,7 +28,7 @@ const WizardForm: React.FC = () => {
             }],
             educations:[{
                 institute: '',
-                degree_id: '',
+                degree_id: 0,
                 due_date: '',
                 description: '',
             }]

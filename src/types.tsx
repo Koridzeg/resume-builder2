@@ -3,7 +3,7 @@
 export type WizardFormData = {
     name: string,
     surname: string,
-    image: File[] | null | undefined,
+    image: string,
     about_me: string,
     email: string,
     phone_number: string,
@@ -15,9 +15,9 @@ export type WizardFormData = {
         description: string,
     }[];
     educations: {
-        institute: '',
-        degree_id: ''
-        due_date: '',
-        description: '',
+        institute: string,
+        degree_id: number,
+        due_date: string | null,
+        description: string
     }[];
 }
