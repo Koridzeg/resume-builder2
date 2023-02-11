@@ -60,7 +60,7 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleNextStep, handleBackStep,
         setErrors(prevErrors => ({ ...prevErrors, [field]: error }))
     }
 
-    const handleFieldChange = (index: number, field: 'position' | 'employer' | 'start_date' | 'due_date' | 'description', value: string) => {
+    const handleFieldChange = (index: number, field: 'position' | 'employer' | 'startingDate' | 'endingDate' | 'description', value: string) => {
         const updatedExperiences = formData.experiences.map((experience, i) => {
             if (i === index) {
                 return { ...experience, [field]: value };

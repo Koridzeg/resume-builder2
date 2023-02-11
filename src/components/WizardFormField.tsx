@@ -1,6 +1,7 @@
 import { Box, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import errorImage from '../images/error.png'
+import successImage from '../images/success.png'
 
 type TextFieldProps = {
     label: string,
@@ -55,7 +56,13 @@ const WizardFormField = ({ label, hint, placeholder, validate, onError, value, o
                     type='text'
                     value={value}
                     onChange={handleChange} />
-                {error && <img src={errorImage} alt='error' style={{ width: '20px', height: '20px',position:'relative',left:'10px',top:'17px'  }} />}
+                {error === undefined ? null : (
+                    error ? (
+                        <img src={errorImage} alt="error" style={{ width: '20px', height: '20px', position: 'relative', left: '10px', top: '17px' }} />
+                    ) : (
+                        <img src={successImage} alt="different icon" style={{ width: '20px', height: '20px', position: 'relative', right: '35px', top: '17px' }} />
+                    )
+                )}
             </Box>
             <Typography fontSize='14px' color='#2E2E2E' fontWeight='100'>{hint}</Typography>
         </Box>

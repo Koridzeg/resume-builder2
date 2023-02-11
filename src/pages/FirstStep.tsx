@@ -88,13 +88,13 @@ const FirstStep: React.FC<FirstStepProps> = ({ handleNextStep, formData, updateF
         const phoneValid = handlePhoneValidation(formData.phone_number);
         const surnameValid = handleNameValidation(formData.surname);
         const imageValid = formData.image.length > 0;
-    
+
         setFormValid(nameValid && emailValid && phoneValid && surnameValid && imageValid);
     }, [formData]);
 
-    const handleSubmit = (e:React.MouseEvent<HTMLButtonElement>) => {
+    const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-    
+
         if (formValid) {
             handleNextStep();
         }
@@ -132,7 +132,18 @@ const FirstStep: React.FC<FirstStepProps> = ({ handleNextStep, formData, updateF
                 <Box display='flex' flexDirection='column' gap='0.4em' paddingTop='1.2em' paddingLeft='7.5em'>
                     <Typography fontWeight='700' fontSize='20px'>ჩემ შესახებ (არასავალდებულო)</Typography>
                     <Box>
-                        <TextField value={formData.about_me} onChange={handleAboutMeChange} multiline placeholder="ზოგადი ინფო შენ შესახებ" rows={4} sx={{ bgcolor: 'white', width: "87%", border: undefined ? '1px solid #000000' : '1px solid #98E37E' }} />
+                        <TextField
+                            value={formData.about_me}
+                            onChange={handleAboutMeChange}
+                            multiline placeholder="ზოგადი ინფო შენ შესახებ"
+                            rows={4}
+                            sx={{
+                                bgcolor: 'white', width: "87%", border: undefined ? '1px solid #000000' : '1px solid #98E37E', "& .MuiOutlinedInput-root.Mui-focused": {
+                                    "& > fieldset": {
+                                        borderColor: "black",
+                                    }
+                                },
+                            }} />
                     </Box>
                 </Box>
                 <Box display='flex' width='89%' paddingTop='1em' paddingLeft='7.5em'>
