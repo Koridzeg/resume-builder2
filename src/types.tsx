@@ -10,14 +10,16 @@ export type WizardFormData = {
     experiences: {
         position: string,
         employer: string,
-        startingDate: string | null,
-        endingDate: string | null,
+        start_date: string | null,
+        due_date: string | null,
         description: string,
     }[];
-    institute: string,
-    degree: Degree[]
-    due_date: string | null,
-    eduDescription: string,
+    educations: {
+        institute: '',
+        degree_id: ''
+        due_date: '',
+        description: '',
+    }[];
 }
 
 interface Degree {

@@ -36,8 +36,20 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleNextStep, handleBackStep,
     }
 
     const handleAddForm = () => {
-        setFormCount(formCount + 1)
-    }
+        setFormCount(formCount + 1);
+        updateFormData({
+            experiences: [
+                ...formData.experiences,
+                {
+                    position: '',
+                    employer: '',
+                    start_date: '',
+                    due_date: '',
+                    description: '',
+                }
+            ]
+        });
+    };
 
     const handleEmployerValidation = (value: string): boolean => {
         return value.length >= 2
@@ -95,18 +107,16 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleNextStep, handleBackStep,
                 </Box>
                 {Array.from({ length: formCount }, (_, index) => (
                     <React.Fragment key={index} >
-                        {formData.experiences.map((experience, index) => (
-                            <>
                                 <Box display='flex' width='89%' paddingTop='1em' paddingLeft='7.5em'>
-                                    <WizardFormField value={experience.position} onError={(value) => handleError('positionError', value)} onChange={(value) => handleFieldChange(index, 'position', value)} placeholder='დეველოპერი, დიზაინერი, ა.შ.' label='თანამდებობა' hint='მინიმუმ 2 სიმბოლო' validate={handlePositionValidation} />
+                                    <WizardFormField value={formData.experiences[index].position} onError={(value) => handleError('positionError', value)} onChange={(value) => handleFieldChange(index, 'position', value)} placeholder='დეველოპერი, დიზაინერი, ა.შ.' label='თანამდებობა' hint='მინიმუმ 2 სიმბოლო' validate={handlePositionValidation} />
                                 </Box>
                                 <Box display='flex' width='89%' paddingTop='1em' paddingLeft='7.5em'>
-                                    <WizardFormField value={experience.employer} onError={(value) => handleError('employerError', value)} onChange={(value) => handleFieldChange(index, 'employer', value)} placeholder='დამსაქმებელი' label='დამსაქმებელი' hint='მინიმუმ 2 სიმბოლო' validate={handleEmployerValidation} />
+                                    <WizardFormField value={formData.experiences[index].employer} onError={(value) => handleError('employerError', value)} onChange={(value) => handleFieldChange(index, 'employer', value)} placeholder='დამსაქმებელი' label='დამსაქმებელი' hint='მინიმუმ 2 სიმბოლო' validate={handleEmployerValidation} />
                                 </Box>
                                 <Box display='flex' flexDirection='row' gap='4em' paddingTop='1.5em' paddingLeft='7.5em'>
                                     <Box display='flex' flexDirection='column' width='40%' gap='1em'>
                                         <Typography sx={{ fontSize: '18px', fontWeight: '700' }}>დაწყების რიცხვი</Typography>
-                                        <DesktopDatePicker value={experience.startingDate} onChange={(newValue) => {
+                                        <DesktopDatePicker value={formData.experiences[index].start_date} onChange={(newValue) => {
                                             handleStartingDateChange(index, newValue)
                                         }}
                                             renderInput={(params) => <TextField sx={{ bgcolor: 'white' }} {...params} />}
@@ -114,7 +124,7 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleNextStep, handleBackStep,
                                     </Box>
                                     <Box display='flex' flexDirection='column' width='40%' gap='1em'>
                                         <Typography sx={{ fontSize: '18px', fontWeight: '700' }}>დამთავრების რიცხვი</Typography>
-                                        <DesktopDatePicker value={experience.endingDate || ''} onChange={(newValue) => {
+                                        <DesktopDatePicker value={formData.experiences[index].due_date} onChange={(newValue) => {
                                             handleEndingDateChange(index, newValue)
                                         }}
                                             renderInput={(params) => <TextField sx={{ bgcolor: 'white' }} {...params} />}
@@ -125,12 +135,10 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleNextStep, handleBackStep,
                                 <Box display='flex' flexDirection='column' gap='0.4em' paddingTop='1.2em' paddingLeft='7.5em'>
                                     <Typography fontWeight='700' fontSize='20px'>აღწერა</Typography>
                                     <Box>
-                                        <TextField value={experience.description} onChange={(e) => handleFieldChange(index, 'description', e.target.value)}  multiline placeholder="როლი თანამდებობაზე და ზოგადი აღწერა" rows={4} sx={{ bgcolor: 'white', width: "87%" }} />
+                                        <TextField value={formData.experiences[index].description} onChange={(e) => handleFieldChange(index, 'description', e.target.value)} multiline placeholder="როლი თანამდებობაზე და ზოგადი აღწერა" rows={4} sx={{ bgcolor: 'white', width: "87%" }} />
                                     </Box>
                                 </Box>
-                            </>
-                        ))}
-                    </React.Fragment>
+                            </React.Fragment>
                 ))}
                 <Box display='flex' flexDirection='column' gap='3em' paddingTop='1.2em' paddingLeft='7.5em'>
                     <img src={smallLine} alt="" style={{ width: '87%' }} />

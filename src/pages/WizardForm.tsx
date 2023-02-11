@@ -22,14 +22,16 @@ const WizardForm: React.FC = () => {
             experiences: [{
                 position: '',
                 employer: '',
-                startingDate: '',
-                endingDate: '',
+                start_date: '',
+                due_date: '',
                 description: '',
             }],
-            institute: '',
-            degree: [],
-            due_date: '',
-            eduDescription: '',
+            educations:[{
+                institute: '',
+                degree: [],
+                due_date: '',
+                eduDescription: '',
+            }]
         };
     });
 
