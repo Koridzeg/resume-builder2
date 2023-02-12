@@ -16,11 +16,11 @@ const Resume: React.FC<ResumeProps> = ({ formData }) => {
 
 
     return (
-        <Box display='flex' height='100%' width='45%' gap='1.5rem' flexDirection='column' paddingLeft='6em' paddingTop='3.5em'>
+        <Box display='flex' height='100%' maxWidth='45%' gap='1.5rem' flexDirection='column' paddingLeft='6em' paddingTop='3.5em' sx={{overflowWrap: 'break-word'}} >
             {formData.image && (
                 <img src={formData.image} alt="" style={{ width: '246px', height: '246px', position: 'absolute', left: '82%', borderRadius: '133px' }} />
             )}
-            <Box display='flex' flexDirection='row' gap='1.5em'>
+            <Box display='flex' gap='1.5em' maxWidth='45%' flexDirection='column'>
                 <Typography color='#F93B1D' fontWeight='bold' fontSize='36px'>{formData.name}</Typography>
                 <Typography color='#F93B1D' fontWeight='700' fontSize='36px'>{formData.surname}</Typography>
             </Box>
@@ -35,8 +35,8 @@ const Resume: React.FC<ResumeProps> = ({ formData }) => {
                 </Box>
             </Box>
             <Typography color='#F93B1D' fontWeight='700' fontSize='28px'>ჩემ შესახებ</Typography>
-            <Box display='flex' flexDirection='column' width='65%'>
-                <Typography fontSize='19px' fontWeight='400'>{formData.about_me}</Typography>
+            <Box display='flex' flexDirection='column' maxWidth='45%'>
+                <Typography fontSize='19px' fontWeight='400' style={{ wordWrap: "break-word" }}>{formData.about_me}</Typography>
             </Box>
             <img src={smallLine} alt="" style={{ width: '90%' }} />
             <Typography fontWeight='700' fontSize='28px' color='#F93B1D'>გამოცდილება</Typography>

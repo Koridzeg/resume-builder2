@@ -93,7 +93,7 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleNextStep, handleBackStep,
 
     return (
         <Box display='flex' width='100%' flexDirection='row'>
-            <Box display='flex' paddingLeft='1.5em' gap="1em" bgcolor='#F9F9F9' width="55%" flexDirection='column' minHeight='100vh'>
+            <Box display='flex' paddingLeft='1.5em' gap="1em" bgcolor='#F9F9F9' width="1080px" flexDirection='column' minHeight='100vh'>
                 <Box display='flex' gap="3em" flexDirection='row' padding='2em'>
                     <IconButton style={{ height: '40px', width: '40px', }} onClick={() => {
                         handleBackStep()
@@ -119,7 +119,11 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleNextStep, handleBackStep,
                                         <DesktopDatePicker value={formData.experiences[index].start_date} onChange={(newValue) => {
                                             handleStartingDateChange(index, newValue)
                                         }}
-                                            renderInput={(params) => <TextField sx={{ bgcolor: 'white' }} {...params} />}
+                                            renderInput={(params) => <TextField sx={{ bgcolor: 'white', "& .MuiOutlinedInput-root.Mui-focused": {
+                                                "& > fieldset": {
+                                                    borderColor: "black",
+                                                }
+                                            }, }} {...params} />}
                                         ></DesktopDatePicker>
                                     </Box>
                                     <Box display='flex' flexDirection='column' width='40%' gap='1em'>
@@ -127,7 +131,13 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleNextStep, handleBackStep,
                                         <DesktopDatePicker value={formData.experiences[index].due_date} onChange={(newValue) => {
                                             handleEndingDateChange(index, newValue)
                                         }}
-                                            renderInput={(params) => <TextField sx={{ bgcolor: 'white' }} {...params} />}
+                                            renderInput={(params) => <TextField sx={{ bgcolor: 'white', "& .MuiOutlinedInput-root.Mui-focused": {
+                                                "& > fieldset": {
+                                                    borderColor: "black",
+                                                }
+                                            }, 
+
+                                        }} {...params} />}
                                         ></DesktopDatePicker>
                                     </Box>
 
@@ -135,7 +145,11 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleNextStep, handleBackStep,
                                 <Box display='flex' flexDirection='column' gap='0.4em' paddingTop='1.2em' paddingLeft='7.5em'>
                                     <Typography fontWeight='700' fontSize='20px'>აღწერა</Typography>
                                     <Box>
-                                        <TextField value={formData.experiences[index].description} onChange={(e) => handleFieldChange(index, 'description', e.target.value)} multiline placeholder="როლი თანამდებობაზე და ზოგადი აღწერა" rows={4} sx={{ bgcolor: 'white', width: "87%" }} />
+                                        <TextField value={formData.experiences[index].description} onChange={(e) => handleFieldChange(index, 'description', e.target.value)} multiline placeholder="როლი თანამდებობაზე და ზოგადი აღწერა" rows={4} sx={{ bgcolor: 'white', width: "87%","& .MuiOutlinedInput-root.Mui-focused": {
+                                                "& > fieldset": {
+                                                    borderColor: "black",
+                                                }
+                                            },  }} />
                                     </Box>
                                 </Box>
                             </React.Fragment>
