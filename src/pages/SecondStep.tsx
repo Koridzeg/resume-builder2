@@ -92,7 +92,7 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleNextStep, handleBackStep,
 
 
     return (
-        <Box display='flex' width='100%' flexDirection='row'>
+        <Box display='flex'  flexDirection='row'>
             <Box display='flex' paddingLeft='1.5em' gap="1em" bgcolor='#F9F9F9' width="1080px" flexDirection='column' minHeight='100vh'>
                 <Box display='flex' gap="3em" flexDirection='row' padding='2em'>
                     <IconButton style={{ height: '40px', width: '40px', }} onClick={() => {
