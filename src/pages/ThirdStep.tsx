@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select,  TextField, Typography } from "@mui/material";
+import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import line from '../images/line.png'
 import back from '../images/back.png'
 import React, { useState, useEffect } from "react";
@@ -7,6 +7,9 @@ import Resume from "../components/Resume";
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
 import smallLine from '../images/smallline.png'
 import { WizardFormData } from "../types";
+import useSubmit from "../useSubmit";
+import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 
 interface Degree {
     id: number,
@@ -23,6 +26,7 @@ type ThirdStepProps = {
 const ThirdStep: React.FC<ThirdStepProps> = ({ handleBackStep, handleNextStep, formData, updateFormData }) => {
     const [formCount, setFormCount] = useState(1)
     const [degree, setDegree] = useState<Degree[]>([])
+
 
     const [errors, setErrors] = useState({
         institute: '',
@@ -82,6 +86,8 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ handleBackStep, handleNextStep, f
         updateFormData({ educations: updatedExperiences });
     };
 
+    const handleSubmit = useSubmit(formData);
+
     return (
         <Box display='flex' width='100%' flexDirection='row' >
             <Box display='flex' paddingLeft='1.5em' gap="1em" bgcolor='#F9F9F9' width="55%" flexDirection='column' minHeight='100vh'>
@@ -114,7 +120,7 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ handleBackStep, handleNextStep, f
                                         id="degree-select"
 
                                         value={formData.educations[index].degree_id}
-                                        onChange={(e) => handleFieldChange(index,'degree_id', e.target.value)}>
+                                        onChange={(e) => handleFieldChange(index, 'degree_id', e.target.value)}>
                                         {degree.map((degree) => (
                                             <MenuItem key={degree.id} value={degree.id}>
                                                 {degree.title}
@@ -147,9 +153,7 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ handleBackStep, handleNextStep, f
                 </Box>
                 <Box display='flex' paddingLeft='7.5em' width='88%' flexDirection='row' justifyContent='space-between' paddingTop='10em'>
                     <Button sx={{ bgcolor: '#6B40E3', width: '113px', height: '48px', borderRadius: '4px', color: 'white', fontSize: '18px', fontWeight: '500' }}>უკან</Button>
-                    <Button onClick={() => {
-                        handleNextStep();
-                    }} sx={{ bgcolor: '#6B40E3', width: '151px', height: '48px', borderRadius: '4px', color: 'white', fontSize: '18px', fontWeight: '500' }}>შემდეგი</Button>
+                    <Button onClick={handleSubmit} sx={{ bgcolor: '#6B40E3', width: '151px', height: '48px', borderRadius: '4px', color: 'white', fontSize: '18px', fontWeight: '500' }}>შემდეგი</Button>
                 </Box>
             </Box>
             <Resume formData={formData}></Resume>
