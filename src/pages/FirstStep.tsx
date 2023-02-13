@@ -139,7 +139,7 @@ const FirstStep: React.FC<FirstStepProps> = ({ handleNextStep, formData, updateF
                             multiline placeholder="ზოგადი ინფო შენ შესახებ"
                             rows={4}
                             sx={{
-                                bgcolor: 'white', width: "87%", border: undefined ? '1px solid #000000' : '1px solid #98E37E', "& .MuiOutlinedInput-root.Mui-focused": {
+                                bgcolor: 'white', width: "87%", border: formData.about_me.length === 0 ? '1px solid black' : '1px solid #98E373', "& .MuiOutlinedInput-root.Mui-focused": {
                                     "& > fieldset": {
                                         borderColor: "black",
                                     }

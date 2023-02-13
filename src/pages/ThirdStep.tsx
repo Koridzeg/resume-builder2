@@ -122,7 +122,10 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ handleBackStep, handleNextStep, f
                         <img src={back} alt='circle' />
                     </IconButton>
                     <Box display='flex' flexDirection='column'>
-                        <Typography sx={{ fontWeight: '700', fontSize: '24px' }}>განათლება</Typography>
+                        <Box display='flex' justifyContent='space-between' width='90%'>
+                            <Typography sx={{ fontWeight: '700', fontSize: '26px' }}>განათლება</Typography>
+                            <Typography sx={{ position: 'relative', top: '50%', fontSize: '18px' }}>3/3</Typography>
+                        </Box>
                         <img src={line} alt="line" style={{ width: '90%', paddingTop: '1em' }} />
                     </Box>
                 </Box>
@@ -142,7 +145,6 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ handleBackStep, handleNextStep, f
                                         labelId="degree-select-label"
                                         sx={{ bgcolor: 'white' }}
                                         id="degree-select"
-
                                         value={formData.educations[index].degree_id}
                                         onChange={(e) => handleFieldChange(index, 'degree_id', e.target.value)}>
                                         {degree.map((degree) => (
@@ -158,7 +160,13 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ handleBackStep, handleNextStep, f
                                 <DesktopDatePicker value={formData.educations[index].due_date} onChange={(newValue) => {
                                     handleEndingDateChange(index, newValue)
                                 }}
-                                    renderInput={(params) => <TextField onFocus={e => e.target.blur()} sx={{ bgcolor: 'white' }} {...params} />}
+                                    renderInput={(params) => <TextField onFocus={e => e.target.blur()} sx={{
+                                        bgcolor: 'white', "& .MuiOutlinedInput-root.Mui-focused": {
+                                            "& > fieldset": {
+                                                borderColor: formData.experiences[index].start_date.length < 0 ? '#000000' : '#98E373'
+                                            }
+                                        },
+                                    }} {...params} />}
                                 >
                                 </DesktopDatePicker>
                             </Box>
@@ -166,7 +174,11 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ handleBackStep, handleNextStep, f
                         <Box display='flex' flexDirection='column' gap='0.4em' paddingTop='1.2em' paddingLeft='7.5em'>
                             <Typography fontWeight='700' fontSize='20px'>აღწერა</Typography>
                             <Box>
-                                <TextField value={formData.educations[index].description} onChange={(e) => handleFieldChange(index, 'description', e.target.value)} multiline placeholder="როლი თანამდებობაზე და ზოგადი აღწერა" rows={4} sx={{ bgcolor: 'white', width: "87%" }} />
+                                <TextField value={formData.educations[index].description} onChange={(e) => handleFieldChange(index, 'description', e.target.value)} multiline placeholder="როლი თანამდებობაზე და ზოგადი აღწერა" rows={4} sx={{ bgcolor: 'white', width: "87%",border: formData.educations[index].description.length === 0 ? '1px solid black' : '1px solid #98E373', "& .MuiOutlinedInput-root.Mui-focused": {
+                                    "& > fieldset": {
+                                        borderColor: "black",
+                                    }
+                                }, }} />
                             </Box>
                         </Box>
                     </React.Fragment>

@@ -127,7 +127,10 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleNextStep, handleBackStep,
                         <img src={back} alt='circle' />
                     </IconButton>
                     <Box display='flex' flexDirection='column'>
-                        <Typography sx={{ fontWeight: '700', fontSize: '24px' }}>გამოცდილება</Typography>
+                    <Box display='flex' justifyContent='space-between' width='90%'>
+                            <Typography sx={{ fontWeight: '700', fontSize: '26px' }}>გამოცდილება</Typography>
+                            <Typography sx={{ position: 'relative', top: '50%', fontSize: '18px' }}>2/3</Typography>
+                        </Box>
                         <img src={line} alt="line" style={{ width: '90%', paddingTop: '1em' }} />
                     </Box>
                 </Box>
@@ -148,9 +151,10 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleNextStep, handleBackStep,
                                     renderInput={(params) => <TextField onFocus={e => e.target.blur()} sx={{
                                         bgcolor: 'white', "& .MuiOutlinedInput-root.Mui-focused": {
                                             "& > fieldset": {
-                                                borderColor: "black",
+                                                borderColor: formData.experiences[index].start_date.length < 0 ? '#000000' : '#98E373'
                                             }
                                         },
+
                                     }} {...params} />}
                                 ></DesktopDatePicker>
                             </Box>
@@ -162,7 +166,7 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleNextStep, handleBackStep,
                                     renderInput={(params) => <TextField onFocus={e => e.target.blur()} sx={{
                                         bgcolor: 'white', "& .MuiOutlinedInput-root.Mui-focused": {
                                             "& > fieldset": {
-                                                borderColor: "black",
+                                                borderColor: formData.experiences[index].due_date.length < 0 ? '#000000' : '#98E373'
                                             }
                                         },
                                         '& .MuiOutlinedInput-root': {
@@ -171,6 +175,7 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleNextStep, handleBackStep,
                                             },
                                           },
 
+                                          
                                     }} {...params} />}
                                 ></DesktopDatePicker>
                             </Box>
@@ -185,6 +190,7 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleNextStep, handleBackStep,
                                             borderColor: "black",
                                         }
                                     },
+                                    border: formData.experiences[index].description.length === 0 ? '1px solid black' : '1px solid #98E373'
                                 }} />
                             </Box>
                         </Box>
