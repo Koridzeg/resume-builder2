@@ -59,6 +59,7 @@ const Resume: React.FC<ResumeProps> = ({ formData }) => {
                 </React.Fragment>
             ))}
             <img src={smallLine} alt="" style={{ width: '90%' }} />
+            <Typography fontWeight='700' fontSize='28px' color='#F93B1D'>განათლება</Typography>
             {formData.educations.map((edu, idx) => (
                 <React.Fragment key={idx}>
                     <Box display='flex' maxWidth='45%'>

@@ -14,7 +14,7 @@ type ModifiedData = {
     educations:Education[];
   };
 
-const useSubmit = (formData: WizardFormData) => {
+  const useSubmit = (formData: WizardFormData) => {
     function removeEmptyObjects<T extends object>(array: T[]): T[] {
         return array.filter((obj:T) => {
           return Object.values(obj).some((val) => val);
@@ -43,24 +43,14 @@ const useSubmit = (formData: WizardFormData) => {
 
             // Format the dates as "2017/06/25"
             modifiedData.experiences.forEach((experience) => {
-                experience.start_date = new Date(experience.start_date)
-                    .toLocaleDateString("en-US")
-                    .split("/")
-                    .reverse()
-                    .join("/");
-                experience.due_date = new Date(experience.due_date)
-                    .toLocaleDateString("en-US")
-                    .split("/")
-                    .reverse()
-                    .join("/");
-            });
-            modifiedData.educations.forEach((education) => {
-                education.due_date = new Date(education.due_date)
-                    .toLocaleDateString("en-US")
-                    .split("/")
-                    .reverse()
-                    .join("/");
-            });
+                experience.start_date = new Date(experience.start_date).toISOString().split('T')[0];
+                experience.due_date = new Date(experience.due_date).toISOString().split('T')[0];
+              });
+              modifiedData.educations.forEach((education) => {
+                education.due_date = new Date(education.due_date).toISOString().split('T')[0];
+              });
+
+            console.log(modifiedData)
 
             const response = await axios.post(
                 "https://resume.redberryinternship.ge/api/cvs",
@@ -84,4 +74,4 @@ const useSubmit = (formData: WizardFormData) => {
     return postData;
 };
 
-  export default useSubmit
+export default useSubmit;

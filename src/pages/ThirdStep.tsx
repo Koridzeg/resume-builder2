@@ -8,7 +8,6 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
 import smallLine from '../images/smallline.png'
 import { WizardFormData } from "../types";
 import useSubmit from "../useSubmit";
-import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 
 interface Degree {
@@ -93,7 +92,8 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ handleBackStep, handleNextStep, f
             <Box display='flex' paddingLeft='1.5em' gap="1em" bgcolor='#F9F9F9' width="55%" flexDirection='column' minHeight='100vh'>
                 <Box display='flex' gap="3em" flexDirection='row' padding='2em'>
                     <IconButton style={{ height: '40px', width: '40px', }} onClick={() => {
-                        handleBackStep()
+                        localStorage.removeItem('formData')
+                        window.location.reload()
                     }}>
                         <img src={back} alt='circle' />
                     </IconButton>
@@ -152,7 +152,9 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ handleBackStep, handleNextStep, f
                     <Button onClick={handleAddForm} sx={{ width: '289px', bgcolor: '#62A1EB', color: 'white', height: '50px', borderRadius: '5px', fontSize: '16px' }}>მეტი გამოცდილების დამატება</Button>
                 </Box>
                 <Box display='flex' paddingLeft='7.5em' width='88%' flexDirection='row' justifyContent='space-between' paddingTop='10em'>
-                    <Button sx={{ bgcolor: '#6B40E3', width: '113px', height: '48px', borderRadius: '4px', color: 'white', fontSize: '18px', fontWeight: '500' }}>უკან</Button>
+                    <Button onClick={() => {
+                        handleBackStep()
+                    }} sx={{ bgcolor: '#6B40E3', width: '113px', height: '48px', borderRadius: '4px', color: 'white', fontSize: '18px', fontWeight: '500' }}>უკან</Button>
                     <Button onClick={handleSubmit} sx={{ bgcolor: '#6B40E3', width: '151px', height: '48px', borderRadius: '4px', color: 'white', fontSize: '18px', fontWeight: '500' }}>შემდეგი</Button>
                 </Box>
             </Box>

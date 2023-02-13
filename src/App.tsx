@@ -10,7 +10,7 @@ function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Suspense fallback={<div>...loading</div>}>
-        <Router>
+        <Router basename={process.env.PUBLIC_URL}>
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/create" element={<WizardForm />} />
