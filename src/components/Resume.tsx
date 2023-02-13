@@ -78,7 +78,7 @@ const Resume: React.FC<ResumeProps> = ({ formData }) => {
             {formData.educations.map((edu, idx) => (
                 <React.Fragment key={idx}>
                     <Box display='flex' maxWidth='45%'>
-                        <Typography fontWeight='700' color='#1A1A1A' style={{ wordWrap: "break-word" }} >{edu.institute}</Typography>
+                        <Typography fontWeight='700' color='#1A1A1A' width='100%' style={{ wordWrap: "break-word" }} >{edu.institute}</Typography>
                     </Box>
                     <Box display='flex' maxWidth='45%'>
                         {edu.due_date ? new Date(edu.due_date).toISOString().substring(0, 10) : ''}
