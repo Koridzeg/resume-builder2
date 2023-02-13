@@ -50,7 +50,6 @@ type ModifiedData = {
                 education.due_date = new Date(education.due_date).toISOString().split('T')[0];
               });
 
-            console.log(modifiedData)
 
             const response = await axios.post(
                 "https://resume.redberryinternship.ge/api/cvs",
@@ -62,7 +61,7 @@ type ModifiedData = {
                 }
             );
 
-            console.log(response.data);
+           
             navigate("/finishedresume", {
                 state: response.data,
             });

@@ -103,7 +103,7 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleNextStep, handleBackStep,
                 description.length > 0
             );
         });
-        console.log(experiencesValid)
+        
 
         setFormValid(experiencesValid);
     }, [formData]);

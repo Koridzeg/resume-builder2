@@ -5,6 +5,7 @@ import smallLine from '../images/smallline.png'
 import { WizardFormData } from '../types'
 import test from "../images/test.png"
 import React from 'react'
+import rlogo from "../images/rlogo.png"
 
 type ResumeProps = {
     formData: WizardFormData
@@ -73,6 +74,7 @@ const Resume: React.FC<ResumeProps> = ({ formData }) => {
                     </Box>
                 </React.Fragment>
             ))}
+            <img src={rlogo} alt="sadasdasdasdsadasdd" style={{position:'absolute',width:'40px',height:'40px',bottom:'5%',right:'39%'}} />
         </Box>
     )
 }
