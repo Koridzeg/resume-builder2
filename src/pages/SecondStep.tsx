@@ -1,4 +1,4 @@
-import { Box, IconButton, TextField, Typography } from '@mui/material'
+import { Box, IconButton, Typography } from '@mui/material'
 import Button from '@mui/material/Button'
 import React, { useState, useEffect } from 'react'
 import back from "../images/back.png"
@@ -9,7 +9,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
 import smallLine from '../images/smallline.png'
 import { WizardFormData } from '../types'
 import { useNavigate } from 'react-router-dom'
-
+import TextField from '@mui/material/TextField';
 
 
 
@@ -94,19 +94,19 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleNextStep, handleBackStep,
 
     useEffect(() => {
         const experiencesValid = formData.experiences.every(experience => {
-          const { position, employer, start_date, due_date, description } = experience;
-          return (
-            position.length >= 2 &&
-            employer.length >= 2 &&
-            Object.keys(start_date).length > 0 &&
-            Object.keys(due_date).length > 0 &&
-            description.length > 0
-          );
+            const { position, employer, start_date, due_date, description } = experience;
+            return (
+                position.length >= 2 &&
+                employer.length >= 2 &&
+                Object.keys(start_date).length > 0 &&
+                Object.keys(due_date).length > 0 &&
+                description.length > 0
+            );
         });
         console.log(experiencesValid)
-      
+
         setFormValid(experiencesValid);
-      }, [formData]);
+    }, [formData]);
 
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -145,7 +145,7 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleNextStep, handleBackStep,
                                 <DesktopDatePicker value={formData.experiences[index].start_date} onChange={(newValue) => {
                                     handleStartingDateChange(index, newValue)
                                 }}
-                                    renderInput={(params) => <TextField sx={{
+                                    renderInput={(params) => <TextField onFocus={e => e.target.blur()} sx={{
                                         bgcolor: 'white', "& .MuiOutlinedInput-root.Mui-focused": {
                                             "& > fieldset": {
                                                 borderColor: "black",
@@ -159,12 +159,17 @@ const SecondStep: React.FC<SecondStepProps> = ({ handleNextStep, handleBackStep,
                                 <DesktopDatePicker value={formData.experiences[index].due_date} onChange={(newValue) => {
                                     handleEndingDateChange(index, newValue)
                                 }}
-                                    renderInput={(params) => <TextField sx={{
+                                    renderInput={(params) => <TextField onFocus={e => e.target.blur()} sx={{
                                         bgcolor: 'white', "& .MuiOutlinedInput-root.Mui-focused": {
                                             "& > fieldset": {
                                                 borderColor: "black",
                                             }
                                         },
+                                        '& .MuiOutlinedInput-root': {
+                                            '&:hover fieldset': {
+                                              cursor: 'default'
+                                            },
+                                          },
 
                                     }} {...params} />}
                                 ></DesktopDatePicker>

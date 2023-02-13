@@ -17,20 +17,20 @@ const FinishedResume = () => {
     const state = location.state;
     return (
         <Box display='flex' minHeight='100vh' justifyContent='center' alignItems='center' >
-            <Box display='flex' width='822px' height='900px' padding='5em' gap='1em' border='1px solid black' flexDirection='column' marginBottom='3em'>
+            <Box display={message ? 'block' : 'none'} position='absolute' top='53px' right='70px' width='427px' height='167px' padding='30px 40px' border='1px solid #e4e4e4' boxShadow='0px 4px 28px rgba(0,0,0,0.25)' borderRadius='8px'>
+                <Typography fontSize='28px' color='#1A1A1A' fontWeight='700'>რეზიუმე წარმატებით გაიგზავნა  🎉</Typography>
                 <IconButton onClick={() => {
-                    navigate('/')
-                }} style={{ height: '60px', width: '60px', position: 'absolute', right: '95%', top: '5%' }}>
-                    <img src={backward} alt="asdasdad" />
-                </IconButton>
-                <Box display={message ? 'block' : 'none'} position='absolute' top='53px' right='70px' width='427px' height='167px' padding='30px 40px' border='1px solid #e4e4e4' boxShadow='0px 4px 28px rgba(0,0,0,0.25)' borderRadius='8px'>
-                    <Typography fontSize='28px' color='#1A1A1A' fontWeight='700'>რეზიუმე წარმატებით გაიგზავნა  🎉</Typography>
-                    <IconButton onClick={() => {
-                        setMessage(false)
-                    }}><img src={deletecross} alt="" style={{ position: 'absolute', bottom: '100px', left: '350px' }} /></IconButton>
-                </Box>
+                    setMessage(false)
+                }}><img src={deletecross} alt="" style={{ position: 'absolute', bottom: '100px', left: '350px' }} /></IconButton>
+            </Box>
+            <IconButton onClick={() => {
+                navigate('/')
+            }} style={{ height: '60px', width: '60px', position: 'absolute', right: '95%', top: '5%' }}>
+                <img src={backward} alt="asdasdad" />
+            </IconButton>
+            <Box display='flex' width='822px' position='relative' padding='5em' gap='1em' border='1px solid black' flexDirection='column' marginBottom='3em'>
                 <Box display='flex' justifyContent='flex-start' gap='1em'>
-                    <img src={"https://resume.redberryinternship.ge" + state.image} style={{ width: '246px', height: '246px', position: 'absolute', left: '56%', borderRadius: '133px', bottom: '65%' }} alt="asdasdasdasdas" />
+                    <img src={"https://resume.redberryinternship.ge" + state.image} style={{ width: '230px', height: '230px', position: 'absolute', borderRadius: '133px', top: '8%', right: '8%' }} alt="asdasdasdasdas" />
                     <Typography fontSize='34px' color='#F93B1D' fontWeight='700'>{state.name}</Typography>
                     <Typography fontSize='34px' color='#F93B1D' fontWeight='700'>{state.surname}</Typography>
                 </Box>
@@ -66,7 +66,7 @@ const FinishedResume = () => {
                             </Typography>
                         </Box>
                         <Box display='flex' maxWidth='45%'>
-                            <Typography fontSize='16px'>{experience.description}</Typography>
+                            <Typography fontSize='16px' width='100%' style={{ wordWrap: 'break-word' }}>{experience.description}</Typography>
                         </Box>
                     </React.Fragment>
                 ))}
@@ -87,7 +87,7 @@ const FinishedResume = () => {
                         </Box>
                     </React.Fragment>
                 ))}
-                <img src={rlogo} alt='logo' style={{ width: '40px', height: '40px', position: 'absolute', bottom: '15%' }} />
+                <img src={rlogo} alt='logo' style={{ width: '40px', height: '40px', position: 'absolute', bottom: '1.5%', left: '2.5%' }} />
             </Box>
 
         </Box>

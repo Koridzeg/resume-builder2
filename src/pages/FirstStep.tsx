@@ -101,7 +101,7 @@ const FirstStep: React.FC<FirstStepProps> = ({ handleNextStep, formData, updateF
     };
 
     return (
-        <Box display='flex' flexDirection='row'>
+        <Box display='flex' flexDirection='row' flex='1'>
             <Box display='flex' minHeight='100vh' paddingLeft='1.5em' gap="1.5em" bgcolor='#F9F9F9' height="100%" maxWidth="55%" flexDirection='column'>
                 <Box display='flex' gap="3em" flexDirection='row' padding='2em'>
                     <IconButton style={{ height: '40px', width: '40px', }} onClick={() => {

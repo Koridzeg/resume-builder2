@@ -25,6 +25,7 @@ type ThirdStepProps = {
 const ThirdStep: React.FC<ThirdStepProps> = ({ handleBackStep, handleNextStep, formData, updateFormData }) => {
     const [formCount, setFormCount] = useState(1)
     const [degree, setDegree] = useState<Degree[]>([])
+    const [formValid, setFormValid] = useState(false)
 
 
     const [errors, setErrors] = useState({
@@ -85,7 +86,30 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ handleBackStep, handleNextStep, f
         updateFormData({ educations: updatedExperiences });
     };
 
-    const handleSubmit = useSubmit(formData);
+    const submitData = useSubmit(formData);
+
+    useEffect(() => {
+        const educationsValid = formData.educations.every(educations => {
+            const { institute, degree_id, due_date, description } = educations;
+            return (
+                institute.length >= 2 &&
+                degree_id > 0 &&
+                Object.keys(due_date).length > 0 &&
+                description.length > 0
+            );
+        });
+
+        setFormValid(educationsValid);
+    }, [formData]);
+
+    const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+
+        if (formValid) {
+            submitData()
+            localStorage.removeItem('formData')
+        }
+    };
 
     return (
         <Box display='flex' flexDirection='row' >
@@ -134,7 +158,7 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ handleBackStep, handleNextStep, f
                                 <DesktopDatePicker value={formData.educations[index].due_date} onChange={(newValue) => {
                                     handleEndingDateChange(index, newValue)
                                 }}
-                                    renderInput={(params) => <TextField sx={{ bgcolor: 'white' }} {...params} />}
+                                    renderInput={(params) => <TextField onFocus={e => e.target.blur()} sx={{ bgcolor: 'white' }} {...params} />}
                                 >
                                 </DesktopDatePicker>
                             </Box>
