@@ -163,7 +163,7 @@ const ThirdStep: React.FC<ThirdStepProps> = ({ handleBackStep, handleNextStep, f
                                     renderInput={(params) => <TextField onFocus={e => e.target.blur()} sx={{
                                         bgcolor: 'white', "& .MuiOutlinedInput-root.Mui-focused": {
                                             "& > fieldset": {
-                                                borderColor: formData.experiences[index].start_date.length < 0 ? '#000000' : '#98E373'
+                                                borderColor: formData.educations[index].due_date.length < 0 ? '#000000' : '#98E373'
                                             }
                                         },
                                     }} {...params} />}
